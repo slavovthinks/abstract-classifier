@@ -1,0 +1,19 @@
+- Setup the training and eval pipelines in a way so it is easy to retrain a new and replace the old poor performing one
+- Use only a small subset of the dataset enough for training, validation and test split but not too much that training gets slow and expensive
+- I want the model to be loaded eventually from an external repo/registry it could be an ML-flow registry it could be a simple S3 bucket.
+Take that into account and use proper design patterns for it while doing the software architecture.
+- Do not overengineer the project with all sorts of design patterns and so on only whenever it makes sense. If you're in doubt ask me.
+- Do not write unnecessary comments only such that add value and cannot be easily understood from the code itself.
+- SOMETHING REALLY IMPORTANT WHILE PLANNING: WE MUST FIRST DELIVER SOMETHING WORKING THEN IMPROVE IT GRADUALLY!
+I WANT THE FASTEST ROAD TO A WORKING SOLUTION AND A PLAN ON HOW TO ITERATIVELY IMPROVE IT.
+- Lookup technology documentation do not work on assumptions
+- Build a contract/interface between model and API early as I will be developing both in parallel, not sequentially
+- Look for automation opportunities that can be done via shell/python scripts and later integrated into CI/CD files
+- Use makefile if it makes sense in django world if not do it the django way
+
+Technical:
+- Use UV for package management
+- Pytest for testing unless there is a Django way of doing it. Always prioritize Django and Django Rest Framework best practices.
+If any of my suggestions are against those, explicitly ask me to confirm that I want to do something that is against best practices.
+- Use Pytorch and implement in a way that it can easily be switch via settings/env vars
+- Use Runpod for model training
