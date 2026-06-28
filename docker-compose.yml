@@ -7,14 +7,19 @@ services:
     environment:
       MODEL_BACKEND: ${MODEL_BACKEND:-stub}
       MODEL_VERSION: ${MODEL_VERSION:-stub-v1}
+      MODEL_PATH: ${MODEL_PATH:-/app/pretrained/tfidf}
       INFERENCE_DEVICE: ${INFERENCE_DEVICE:-cpu}
       MAX_ABSTRACT_CHARS: ${MAX_ABSTRACT_CHARS:-20000}
       WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
       DJANGO_DEBUG: "false"
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
-    # Real model artifacts are gitignored and baked at build time or mounted here:
-    # volumes:
-    #   - ./artifacts:/app/artifacts:ro
+    # The committed `pretrained/tfidf` artifact is baked into the image (plain
+    # `COPY . .` in the Dockerfile), so `MODEL_BACKEND=tfidf docker compose up`
+    # works with no volume. This mount is a dev convenience only: a freshly
+    # retrained `artifacts/tfidf` is hot-swappable without rebuilding by also
+    # setting `MODEL_PATH=/app/artifacts/tfidf`.
+    volumes:
+      - ./artifacts:/app/artifacts:ro
     healthcheck:
       test:
         - CMD

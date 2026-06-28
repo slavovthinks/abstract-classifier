@@ -33,6 +33,14 @@ See `docs/implementation-plan.md` for the current plan, build order, and decisio
   conflict and the recommended alternative.
 - **Automate repeatable steps.** Where a task is repeatable, write a shell/Python
   script that can later be lifted into CI/CD, rather than documenting manual steps.
+- **Keep the README's data & model section current.** The "Dataset & model" section
+  of `README.md` (EDA tables/plots and the metrics table, per-class breakdown, and
+  confusion matrix) must reflect the latest pipeline output. Whenever the dataset,
+  label scheme, subsample cap, or a trained model changes, regenerate the figures
+  (`make eda` / `make train-baseline`), copy the regenerated plots into `docs/assets/`
+  with `make refresh-doc-assets`, and update the numbers in the README in the same
+  change. Source artifacts live under the gitignored `artifacts/` — only the copies
+  under `docs/assets/` are committed.
 
 ## Conventions
 
@@ -63,4 +71,10 @@ See `docs/implementation-plan.md` for the current plan, build order, and decisio
   must be switchable (see `docs/implementation-plan.md` §6).
 - **Model artifacts:** loaded behind a clean loader/source seam — simple source now,
   designed to add an external registry/store (MLflow or S3) later (see
-  `docs/implementation-plan.md` §6, §13). Artifacts and the dataset are never committed.
+  `docs/implementation-plan.md` §6, §13). Training outputs under `artifacts/` and the
+  dataset are never committed. **Exception:** the small (~5 MB) TF-IDF serving
+  artifact ships committed under `pretrained/tfidf/` so a fresh clone or built image
+  runs the real model with no training step. It is the default `MODEL_BACKEND=tfidf`
+  path and bakes into the Docker image via the plain `COPY . .`. Refresh it after
+  retraining with `make promote-model` (copies `artifacts/tfidf/` → `pretrained/tfidf/`).
+  Once an external registry/store lands, this committed copy should go away.

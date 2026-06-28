@@ -6,10 +6,17 @@ dependencies = [
     "django>=6.0.6",
     "djangorestframework>=3.17.1",
     "gunicorn>=26.0.0",
+    "joblib>=1.5.3",
+    "scikit-learn>=1.9.0",
+    "snowballstemmer>=3.1.1",
 ]
 
 [dependency-groups]
 dev = [
+    "kaggle>=2.2.3",
+    "matplotlib>=3.11.0",
+    "pandas>=3.0.3",
+    "pyarrow>=24.0.0",
     "pytest>=9.1.1",
     "pytest-django>=4.12.0",
 ]
@@ -20,4 +27,4 @@ package = false
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["test_*.py"]
-testpaths = ["classifier/tests"]
+testpaths = ["classifier/tests", "arxiv_ml/tests"]

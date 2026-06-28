@@ -49,12 +49,12 @@ def build_predictor(cfg: InferenceConfig) -> Predictor:
 
         return StubPredictor(model_version=cfg.model_version)
 
-    # artifact_dir = _build_source(cfg).ensure_local()
-    #
-    # if cfg.model_backend is ModelBackend.TFIDF:
-    #     from arxiv_ml.predictors.tfidf import TfidfPredictor
-    #
-    #     return TfidfPredictor(artifact_dir, model_version=cfg.model_version)
+    artifact_dir = _build_source(cfg).ensure_local()
+
+    if cfg.model_backend is ModelBackend.TFIDF:
+        from arxiv_ml.predictors.tfidf import TfidfPredictor
+
+        return TfidfPredictor(artifact_dir, model_version=cfg.model_version)
 
     # if cfg.model_backend is ModelBackend.DISTILBERT:
     #     from arxiv_ml.predictors.distilbert import DistilBertPredictor

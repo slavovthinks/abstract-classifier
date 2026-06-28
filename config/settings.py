@@ -73,11 +73,25 @@ REST_FRAMEWORK = {
 
 # --- ML inference config (the seam handed to arxiv_ml) ---------------------
 
+# Each backend resolves its own artifact path/version so that selecting it is a
+# single env var (MODEL_BACKEND). MODEL_PATH / MODEL_VERSION still override when
+# pointing at a non-standard artifact (e.g. a freshly retrained `artifacts/tfidf`).
+# TFIDF defaults to the committed `pretrained/tfidf` so a fresh clone (or built
+# image) runs the real model with no training step and no mounted volume.
+_BACKEND_DEFAULTS = {
+    ModelBackend.STUB: (BASE_DIR / "artifacts", "stub-v1"),
+    ModelBackend.TFIDF: (BASE_DIR / "pretrained" / "tfidf", "tfidf-arxiv-v1"),
+    ModelBackend.DISTILBERT: (BASE_DIR / "artifacts" / "distilbert", "distilbert-arxiv-v1"),
+}
+
+_model_backend = ModelBackend(_env("MODEL_BACKEND", ModelBackend.STUB))
+_default_path, _default_version = _BACKEND_DEFAULTS[_model_backend]
+
 INFERENCE_CONFIG = InferenceConfig(
-    model_backend=ModelBackend(_env("MODEL_BACKEND", ModelBackend.STUB)),
+    model_backend=_model_backend,
     model_source=ModelSourceKind(_env("MODEL_SOURCE", ModelSourceKind.LOCAL)),
-    model_path=Path(_env("MODEL_PATH", str(BASE_DIR / "artifacts"))),
-    model_version=_env("MODEL_VERSION", "stub-v1"),
+    model_path=Path(_env("MODEL_PATH", str(_default_path))),
+    model_version=_env("MODEL_VERSION", _default_version),
     inference_device=InferenceDevice(_env("INFERENCE_DEVICE", InferenceDevice.CPU)),
     max_abstract_chars=int(_env("MAX_ABSTRACT_CHARS", "20000")),
 )

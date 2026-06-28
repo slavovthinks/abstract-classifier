@@ -6,7 +6,7 @@ Classify research articles into predefined categories based on their content, su
 
 ## Dataset 
 
-Use public arxiv dataset - - https://www.kaggle.com/datasets/Cornell University/arxiv 
+Use public arxiv dataset - - https://www.kaggle.com/datasets/Cornell-University/arxiv 
 
 Use abstracts for classification and subject categories for class association. 
 
