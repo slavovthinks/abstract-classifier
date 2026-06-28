@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    image: abstract-classifier:latest
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_BACKEND: ${MODEL_BACKEND:-stub}
+      MODEL_VERSION: ${MODEL_VERSION:-stub-v1}
+      INFERENCE_DEVICE: ${INFERENCE_DEVICE:-cpu}
+      MAX_ABSTRACT_CHARS: ${MAX_ABSTRACT_CHARS:-20000}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
+      DJANGO_DEBUG: "false"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    # Real model artifacts are gitignored and baked at build time or mounted here:
+    # volumes:
+    #   - ./artifacts:/app/artifacts:ro
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/ready').status==200 else 1)"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped

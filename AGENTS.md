@@ -10,12 +10,17 @@ A Django REST Framework API that classifies research-paper abstracts (arXiv) int
 top-level category groups, backed by a fine-tuned transformer model. **The API is
 the graded deliverable; the model is a means to an end, not the focus.**
 
-See `implementation-plan.md` for the current plan, build order, and decisions.
+See `docs/implementation-plan.md` for the current plan, build order, and decisions.
+
+## Private files
+
+- Do not read, search, summarize, or reference `docs/issues.md` unless the user
+  explicitly asks for that exact file.
 
 ## How to work
 
 - **Deliver a working vertical slice first, then improve.** Never let polish block a
-  runnable baseline. (Build order detailed in `implementation-plan.md` §10.)
+  runnable baseline. (Build order detailed in `docs/implementation-plan.md` §10.)
 - **Set up proper logging early.** Configure structured logging as part of the first
   working slice, not as a later polish step.
 - **Don't over-engineer.** Add an abstraction or design pattern only when it earns
@@ -47,11 +52,15 @@ See `implementation-plan.md` for the current plan, build order, and decisions.
 
 ## Tooling & environment
 
-- **Package management:** `uv`.
+- **Package management:** `uv`. Always add dependencies with `uv add <package>`
+  (or `uv add --dev <package>` for dev/test deps) — never hand-edit `pyproject.toml`
+  or `uv.lock`. This installs the **latest** release and lets `uv` set the version
+  bound; do not hand-pick or pin older versions unless a documented incompatibility
+  forces it (and call that out explicitly).
 - **ML framework:** PyTorch. Keep the framework/model choice swappable via
   settings/env vars — do not hard-code it at call sites.
 - **Training:** runs on Runpod (GPU). Serving runs on CPU by default but the device
-  must be switchable (see `implementation-plan.md` §6).
+  must be switchable (see `docs/implementation-plan.md` §6).
 - **Model artifacts:** loaded behind a clean loader/source seam — simple source now,
   designed to add an external registry/store (MLflow or S3) later (see
-  `implementation-plan.md` §6, §13). Artifacts and the dataset are never committed.
+  `docs/implementation-plan.md` §6, §13). Artifacts and the dataset are never committed.

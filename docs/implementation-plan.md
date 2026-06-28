@@ -90,7 +90,8 @@ first so both can be built in parallel.
 
 ```
 abstract-classifier/
-├── README.md  AGENTS.md  implementation-plan.md
+├── README.md  AGENTS.md  CLAUDE.md
+├── docs/                         # implementation-plan.md, implementation-diagram.md, issues.md
 ├── Dockerfile  docker-compose.yml  .dockerignore  .gitignore
 ├── pyproject.toml  uv.lock  Makefile  gunicorn.conf.py  manage.py
 ├── arxiv_ml/                    # STANDALONE, framework-agnostic ML core (no Django/DRF) — extractable

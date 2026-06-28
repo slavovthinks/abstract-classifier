@@ -140,7 +140,8 @@ Phase 4 — Explicitly out of scope (mention in README)
 
 ```
 abstract-classifier/
-├── README.md  AGENTS.md  CLAUDE.md  implementation-plan.md
+├── README.md  AGENTS.md  CLAUDE.md
+├── docs/                           # implementation-plan.md, implementation-diagram.md, issues.md, Task 1 AI Engineer.md
 ├── Dockerfile  docker-compose.yml  .dockerignore  .gitignore
 ├── pyproject.toml  uv.lock  Makefile  gunicorn.conf.py  manage.py
 ├── arxiv_ml/                      # standalone ML core — no Django/DRF

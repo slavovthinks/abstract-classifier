@@ -1,0 +1,8 @@
+default_permissions = "project-workspace"
+
+[permissions.project-workspace]
+description = "Workspace access with private project files denied."
+extends = ":workspace"
+
+[permissions.project-workspace.filesystem.":workspace_roots"]
+"docs/issues.md" = "deny"
